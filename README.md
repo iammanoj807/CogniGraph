@@ -1,3 +1,13 @@
+---
+title: CogniGraph
+emoji: 🕸️
+colorFrom: blue
+colorTo: purple
+sdk: docker
+pinned: false
+app_port: 7860
+---
+
 <div align="center">
   <img src="frontend/public/graph-favicon.svg" alt="CogniGraph Logo" width="100" />
   <h1>CogniGraph</h1>
@@ -115,13 +125,3 @@ Distributed under the MIT License. See `LICENSE` for more information.
 ---
 
 Made with ❤️ by Manoj Kumar Thapa
-
----
-title: CogniGraph
-emoji: 🕸️
-colorFrom: blue
-colorTo: purple
-sdk: docker
-pinned: false
-app_port: 7860
----
