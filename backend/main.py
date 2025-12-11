@@ -301,10 +301,15 @@ if __name__ == "__main__":
 # SPA Fallback (Must be at the bottom)
 @app.get("/{full_path:path}")
 async def serve_spa(full_path: str):
-    # If API 404s, it naturally falls here. 
-    # But files are safe because we mounted /assets above.
-    # Serve index.html for any other route (React Router)
+    # Try to serve a specific static file if it exists in the build folder
+    # This comes AFTER specific API routes and /assets mount, so it catches root files like /manoj.png
+    file_path = f"frontend_static/{full_path}"
+    if os.path.exists(file_path) and os.path.isfile(file_path):
+        return FileResponse(file_path)
+
+    # Otherwise, fallback to index.html for React Router (SPA)
     if os.path.exists("frontend_static/index.html"):
         return FileResponse("frontend_static/index.html")
+    
     # If running locally without build, just return 404 or message
     return {"message": "Backend running. Frontend not built (use npm run dev for local development)."}
