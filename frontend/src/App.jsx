@@ -104,10 +104,10 @@ function App() {
       {isMobile && activeMobileTab === 'graph' && graphData.nodes?.length > 0 && (
         <button
           onClick={() => setActiveMobileTab('chat')}
-          className="absolute bottom-24 left-1/2 -translate-x-1/2 z-20 bg-blue-600 text-white px-6 py-3 rounded-full shadow-xl flex items-center gap-2 animate-bounce-in"
+          className="absolute bottom-24 left-1/2 -translate-x-1/2 z-20 text-blue-400 hover:text-blue-300 font-medium flex items-center gap-2 bg-gray-900/80 backdrop-blur-sm px-4 py-2 rounded-full border border-blue-500/30 transition-all duration-300"
         >
           <MessageSquare size={20} />
-          <span className="font-semibold">Open Chat</span>
+          <span>Open Chat</span>
         </button>
       )}
 
