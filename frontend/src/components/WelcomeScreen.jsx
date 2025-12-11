@@ -72,29 +72,29 @@ const WelcomeScreen = ({ onUploadSuccess, autoTrigger, onOpenChat }) => {
     };
 
     return (
-        <div className="relative flex flex-col items-center justify-between min-h-screen w-full bg-gradient-to-br from-gray-900 via-[#0f172a] to-gray-900 text-white p-8 md:p-8 overflow-y-auto">
-            <div className="flex-1 flex flex-col items-center justify-center w-full max-w-2xl text-center space-y-8 animate-fade-in-up py-10">
+        <div className="relative flex flex-col items-center justify-between min-h-screen w-full bg-gradient-to-br from-gray-900 via-[#0f172a] to-gray-900 text-white p-6 overflow-y-auto">
+            <div className="flex-1 flex flex-col items-center justify-center w-full max-w-2xl text-center space-y-6 animate-fade-in-up py-6">
 
                 {/* Icon */}
                 <div className="flex justify-center">
-                    <div className="p-6 bg-blue-500/10 rounded-full border border-blue-500/20 shadow-[0_0_30px_rgba(59,130,246,0.2)]">
-                        <FileText size={64} className="text-blue-400" />
+                    <div className="p-5 bg-blue-500/10 rounded-full border border-blue-500/20 shadow-[0_0_30px_rgba(59,130,246,0.2)]">
+                        <FileText size={48} className="text-blue-400" />
                     </div>
                 </div>
 
                 {/* Title & Description */}
-                <div className="space-y-4">
-                    <h1 className="text-3xl md:text-5xl font-bold tracking-tight bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent pb-2">
+                <div className="space-y-3">
+                    <h1 className="text-3xl md:text-5xl font-bold tracking-tight bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent pb-1">
                         Welcome to CogniGraph
                     </h1>
-                    <p className="text-base md:text-xl text-gray-400 leading-relaxed max-w-lg mx-auto">
+                    <p className="text-sm md:text-xl text-gray-400 leading-relaxed max-w-lg mx-auto px-2">
                         Transform your documents into interactive Knowledge Graphs.
-                        Upload a PDF or Text file to visualize concepts, explore relationships, and chat with your data.
+                        Upload a PDF or Text file to visualize concepts.
                     </p>
                 </div>
 
-                {/* Upload Button */}
-                <div className="flex flex-col items-center gap-4 w-full px-4">
+                {/* Upload Button Section */}
+                <div className="flex flex-col items-center gap-3 w-full px-4 mt-12">
                     <button
                         onClick={() => fileInputRef.current.click()}
                         disabled={isUploading}
@@ -114,7 +114,7 @@ const WelcomeScreen = ({ onUploadSuccess, autoTrigger, onOpenChat }) => {
                     </button>
 
                     {error && (
-                        <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-3 max-w-sm">
+                        <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-3 max-w-sm w-full">
                             <p className="text-red-400 text-sm animate-pulse font-mono break-words">
                                 {retryIn > 0
                                     ? (() => {
@@ -128,20 +128,9 @@ const WelcomeScreen = ({ onUploadSuccess, autoTrigger, onOpenChat }) => {
                         </div>
                     )}
 
-                    <p className="text-sm text-gray-500 mt-2">
+                    <p className="text-xs text-gray-500">
                         Supported formats: .pdf, .txt, .md
                     </p>
-
-                </div>
-
-                <div className="flex flex-col items-center gap-4 mt-8 md:hidden">
-                    <button
-                        onClick={onOpenChat}
-                        className="bg-blue-600 hover:bg-blue-500 text-white px-6 py-3 rounded-full shadow-xl flex items-center gap-2 animate-bounce-in transition-all duration-300"
-                    >
-                        <MessageSquare size={20} />
-                        <span className="font-semibold">Open Chat</span>
-                    </button>
                 </div>
 
                 <input
@@ -153,13 +142,28 @@ const WelcomeScreen = ({ onUploadSuccess, autoTrigger, onOpenChat }) => {
                 />
             </div>
 
-            {/* Footer Section */}
-            <div className="w-full flex flex-col items-center gap-2 pb-6 mt-auto">
-                <p className="text-[10px] md:text-xs text-gray-400 max-w-md text-center px-4 italic">
-                    Privacy Notice: No data is stored. All documents are processed in-memory for this session only.
-                </p>
-                <div className="text-gray-400 text-[10px] font-mono">
-                    © CogniGraph 2025
+            {/* Bottom Section: Open Chat + Footer */}
+            <div className="w-full flex flex-col items-center pb-6 mt-auto space-y-4">
+
+                {/* Mobile Open Chat Button */}
+                <div className="md:hidden w-full flex justify-center px-4">
+                    <button
+                        onClick={onOpenChat}
+                        className="text-blue-400 hover:text-blue-300 font-medium flex items-center gap-2 transition-colors duration-300"
+                    >
+                        <MessageSquare size={18} />
+                        <span>Open Chat</span>
+                    </button>
+                </div>
+
+                {/* Footer Text */}
+                <div className="flex flex-col items-center gap-1">
+                    <p className="text-[10px] text-gray-500 max-w-md text-center px-4 italic">
+                        Privacy Notice: No data is stored. All documents are processed in-memory.
+                    </p>
+                    <div className="text-gray-600 text-[10px] font-mono">
+                        © CogniGraph 2025
+                    </div>
                 </div>
             </div>
         </div>

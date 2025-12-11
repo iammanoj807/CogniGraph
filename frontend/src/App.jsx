@@ -24,7 +24,7 @@ function App() {
   const [highlightedNodes, setHighlightedNodes] = useState([]);
 
   // Responsive State: Tracks if window is mobile-sized
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 800);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   useEffect(() => {
     // Initial load - Reset session to ensure fresh start
@@ -35,7 +35,7 @@ function App() {
 
     // Handle Resize for Responsive Layout
     const handleWindowResize = () => {
-      setIsMobile(window.innerWidth < 800);
+      setIsMobile(window.innerWidth < 768);
     };
     window.addEventListener('resize', handleWindowResize);
     return () => window.removeEventListener('resize', handleWindowResize);
@@ -89,12 +89,16 @@ function App() {
             </button>
           </>
         ) : (
-          <WelcomeScreen onUploadSuccess={setGraphData} autoTrigger={autoTriggerUpload} />
+          <WelcomeScreen
+            onUploadSuccess={setGraphData}
+            autoTrigger={autoTriggerUpload}
+            onOpenChat={() => setActiveMobileTab('chat')}
+          />
         )}
       </div>
 
-      {/* Mobile Floating Toggle for Chat */}
-      {isMobile && activeMobileTab === 'graph' && (
+      {/* Mobile Floating Toggle for Chat (Only show when Graph is active) */}
+      {isMobile && activeMobileTab === 'graph' && graphData.nodes?.length > 0 && (
         <button
           onClick={() => setActiveMobileTab('chat')}
           className="absolute bottom-24 left-1/2 -translate-x-1/2 z-20 bg-blue-600 text-white px-6 py-3 rounded-full shadow-xl flex items-center gap-2 animate-bounce-in"
