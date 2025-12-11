@@ -72,8 +72,8 @@ const WelcomeScreen = ({ onUploadSuccess, autoTrigger }) => {
     };
 
     return (
-        <div className="relative flex flex-col items-center justify-center h-full w-full bg-gradient-to-br from-gray-900 via-[#0f172a] to-gray-900 text-white p-8 pb-40 md:pb-8">
-            <div className="max-w-2xl text-center space-y-8 animate-fade-in-up">
+        <div className="relative flex flex-col items-center justify-between min-h-screen w-full bg-gradient-to-br from-gray-900 via-[#0f172a] to-gray-900 text-white p-8 md:p-8 overflow-y-auto">
+            <div className="flex-1 flex flex-col items-center justify-center w-full max-w-2xl text-center space-y-8 animate-fade-in-up py-10">
 
                 {/* Icon */}
                 <div className="flex justify-center">
@@ -94,7 +94,7 @@ const WelcomeScreen = ({ onUploadSuccess, autoTrigger }) => {
                 </div>
 
                 {/* Upload Button */}
-                <div className="flex flex-col items-center gap-4">
+                <div className="flex flex-col items-center gap-4 w-full px-4">
                     <button
                         onClick={() => fileInputRef.current.click()}
                         disabled={isUploading}
@@ -108,25 +108,27 @@ const WelcomeScreen = ({ onUploadSuccess, autoTrigger }) => {
                         ) : (
                             <>
                                 <Upload size={24} />
-                                <span>Upload</span>
+                                <span className="mr-1">Upload</span>
                             </>
                         )}
                     </button>
 
                     {error && (
-                        <p className="text-red-400 text-sm animate-pulse font-mono">
-                            {retryIn > 0
-                                ? (() => {
-                                    const h = Math.floor(retryIn / 3600);
-                                    const m = Math.floor((retryIn % 3600) / 60);
-                                    const s = retryIn % 60;
-                                    return `API Rate Limit Hit. Retrying allowed in: ${h > 0 ? `${h}h ` : ''}${m}m ${s}s`;
-                                })()
-                                : error}
-                        </p>
+                        <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-3 max-w-sm">
+                            <p className="text-red-400 text-sm animate-pulse font-mono break-words">
+                                {retryIn > 0
+                                    ? (() => {
+                                        const h = Math.floor(retryIn / 3600);
+                                        const m = Math.floor((retryIn % 3600) / 60);
+                                        const s = retryIn % 60;
+                                        return `Rate Limit. Retry in: ${h > 0 ? `${h}h ` : ''}${m}m ${s}s`;
+                                    })()
+                                    : error}
+                            </p>
+                        </div>
                     )}
 
-                    <p className="text-sm text-gray-500">
+                    <p className="text-sm text-gray-500 mt-2">
                         Supported formats: .pdf, .txt, .md
                     </p>
 
@@ -141,7 +143,7 @@ const WelcomeScreen = ({ onUploadSuccess, autoTrigger }) => {
             </div>
 
             {/* Footer Section */}
-            <div className="absolute bottom-6 left-0 w-full flex flex-col items-center gap-2">
+            <div className="w-full flex flex-col items-center gap-2 pb-6 mt-auto">
                 <p className="text-[10px] md:text-xs text-gray-400 max-w-md text-center px-4 italic">
                     Privacy Notice: No data is stored. All documents are processed in-memory for this session only.
                 </p>
