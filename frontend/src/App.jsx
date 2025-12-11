@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import GraphView from './components/GraphView';
 import ChatInterface from './components/ChatInterface';
 import WelcomeScreen from './components/WelcomeScreen';
-import { MessageSquare } from 'lucide-react';
+import { MessageSquare, ChevronLeft, ChevronRight } from 'lucide-react';
 import axios from 'axios';
 
 // Utils: Generate or retrieve Session ID for isolation
@@ -25,6 +25,9 @@ function App() {
 
   // Responsive State: Tracks if window is mobile-sized
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  // Desktop State: Track if chat sidebar is open
+  const [isDesktopChatOpen, setIsDesktopChatOpen] = useState(true);
 
   useEffect(() => {
     // Initial load - Reset session to ensure fresh start
@@ -66,14 +69,14 @@ function App() {
       */}
       <div
         className={`
-            w-full relative order-1 md:order-1 transition-all duration-300 ease-in-out
+            relative order-1 md:order-1 transition-all duration-300 ease-in-out min-w-0
             ${isMobile
-            ? 'absolute inset-0 z-0 h-full' // Mobile: Always full screen background
-            : 'h-full md:flex-1' // Desktop: Flex share
+            ? 'absolute inset-0 z-0 h-full w-full' // Mobile: Full screen absolute
+            : 'h-full md:flex-1' // Desktop: Flex share (removed fixed w-full to prevent overflow)
           }
- 
         `}
       >
+
         {graphData.nodes?.length > 0 ? (
           <>
             <GraphView data={graphData} highlightedNodes={highlightedNodes} />
@@ -109,8 +112,24 @@ function App() {
       )}
 
       {/* 
+        DESKTOP CHAT TOGGLE BUTTON
+        Visible only on Desktop (md:flex)
+        Positions itself relative to the sidebar edge.
+       */}
+      {!isMobile && (
+        <button
+          onClick={() => setIsDesktopChatOpen(prev => !prev)}
+          className="hidden md:flex absolute top-[50%] -translate-y-1/2 z-40 items-center justify-center w-8 h-12 bg-gray-800 border border-gray-600 border-r-0 rounded-l-lg hover:bg-blue-600 hover:border-blue-500 text-gray-400 hover:text-white transition-all duration-300 shadow-xl"
+          style={{ right: isDesktopChatOpen ? SIDEBAR_WIDTH : 0 }}
+          title={isDesktopChatOpen ? "Close Chat" : "Open Chat"}
+        >
+          {isDesktopChatOpen ? <ChevronRight size={20} /> : <ChevronLeft size={20} />}
+        </button>
+      )}
+
+      {/* 
         RIGHT SIDEBAR (Chat)
-        Desktop: Fixed width 400px
+        Desktop: Fixed width 400px (or 0px if closed)
         Mobile: 
           - Default: h-[40vh] (bottom sheet)
           - Expanded: h-full (covers screen)
@@ -120,19 +139,21 @@ function App() {
             w-full md:h-full bg-gray-900 border-t md:border-t-0 md:border-l border-gray-700 z-10 shadow-2xl transition-all duration-300 ease-in-out flex flex-col order-2 md:order-3
             ${isMobile
             ? (activeMobileTab === 'chat' ? 'absolute inset-0 h-full z-30' : 'hidden') // Mobile: Overlay or Hidden
-            : ''
+            : 'relative' // Desktop: Relative to flow
           }
         `}
-        style={!isMobile ? { width: SIDEBAR_WIDTH } : {}}
+        style={!isMobile ? { width: isDesktopChatOpen ? SIDEBAR_WIDTH : 0, overflow: 'hidden' } : {}}
         ref={sidebarRef}
       >
-        <ChatInterface
-          onNewGraphData={setGraphData}
-          onHighlightNodes={setHighlightedNodes}
-          hasUploadedDocument={graphData.nodes.length > 0}
-          isMobileExpanded={activeMobileTab === 'chat'}
-          onToggleMobileExpand={() => setActiveMobileTab(prev => prev === 'chat' ? 'graph' : 'chat')}
-        />
+        <div style={{ minWidth: SIDEBAR_WIDTH, height: '100%' }}> {/* Wrapper to prevent content squishing during transition */}
+          <ChatInterface
+            onNewGraphData={setGraphData}
+            onHighlightNodes={setHighlightedNodes}
+            hasUploadedDocument={graphData.nodes.length > 0}
+            isMobileExpanded={activeMobileTab === 'chat'}
+            onToggleMobileExpand={() => setActiveMobileTab(prev => prev === 'chat' ? 'graph' : 'chat')}
+          />
+        </div>
       </div>
     </div>
   );
