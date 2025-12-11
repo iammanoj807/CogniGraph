@@ -1,8 +1,8 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { Upload, FileText, ArrowRight } from 'lucide-react';
+import { Upload, FileText, ArrowRight, MessageSquare } from 'lucide-react';
 import axios from 'axios';
 
-const WelcomeScreen = ({ onUploadSuccess, autoTrigger }) => {
+const WelcomeScreen = ({ onUploadSuccess, autoTrigger, onOpenChat }) => {
     const fileInputRef = useRef(null);
     const hasTriggeredRef = useRef(false); // Guard against StrictMode double-fire
     const [isUploading, setIsUploading] = useState(false);
@@ -133,6 +133,17 @@ const WelcomeScreen = ({ onUploadSuccess, autoTrigger }) => {
                     </p>
 
                 </div>
+
+                <div className="flex flex-col items-center gap-4 mt-8 md:hidden">
+                    <button
+                        onClick={onOpenChat}
+                        className="bg-blue-600 hover:bg-blue-500 text-white px-6 py-3 rounded-full shadow-xl flex items-center gap-2 animate-bounce-in transition-all duration-300"
+                    >
+                        <MessageSquare size={20} />
+                        <span className="font-semibold">Open Chat</span>
+                    </button>
+                </div>
+
                 <input
                     type="file"
                     ref={fileInputRef}
