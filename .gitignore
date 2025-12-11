@@ -1,0 +1,28 @@
+# System
+.DS_Store
+Thumbs.db
+.gitattributes
+
+# Environments
+venv/
+env/
+.env
+**/.env
+
+# Python
+__pycache__/
+*.py[cod]
+*.so
+
+# Node.js
+node_modules/
+npm-debug.log
+dist/
+build/
+
+# Application Data
+backend/last_uploaded_doc.txt
+*.log
+
+# Deployment Build Artifacts
+frontend_static/
