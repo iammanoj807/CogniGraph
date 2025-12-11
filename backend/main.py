@@ -74,9 +74,16 @@ class GraphResponse(BaseModel):
     nodes: List[dict]
     links: List[dict]
 
+@app.get("/health")
+def health_check():
+    return {"status": "online", "message": "CogniGraph Backend is running"}
+
 @app.get("/")
 def read_root():
-    return {"status": "online", "message": "CogniGraph Backend is running"}
+    # Explicitly serve the frontend index.html at root
+    if os.path.exists("frontend_static/index.html"):
+        return FileResponse("frontend_static/index.html")
+    return {"status": "online", "message": "Backend running. Frontend not built."}
 
 @app.post("/upload")
 async def upload_document(
