@@ -122,7 +122,7 @@ This will automatically:
 
 This project uses the **GitHub Models API (Free Tier)** for AI inference.
 
-*   **Token Limit**: Both GPT-4o and GPT-4o Mini are capped at a strict **8k token context window** (standard is 128k).
+*   **Token Limit**: GPT-4o Mini are capped at a strict **8k token context window** ~~(standard is 128k)~~.
 *   **Handling**: The application uses **Retrieval-Augmented Generation (RAG)** to fetch only relevant document chunks, keeping the context within limits. However, extremely large individual queries or broad document summaries may still hit this cap.
 *   **Upgrade**: To unlock full 128k context, configure a paid **OpenAI / Azure API key** in the backend.
 
