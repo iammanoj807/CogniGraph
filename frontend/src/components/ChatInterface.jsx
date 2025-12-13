@@ -66,7 +66,9 @@ const ChatInterface = ({ onUploadSuccess, onNewGraphData, onHighlightNodes, hasU
 
         } catch (error) {
             console.error("Chat error:", error);
-            setMessages(prev => [...prev, { role: 'ai', content: 'Sorry, I encountered an error.' }]);
+            const errorMessage = error.response?.data?.detail ||
+                (error.message === "Network Error" ? "Network error. Please check your connection." : "I'm having trouble processing that request. It might be too long or complex. Please try shortening it.");
+            setMessages(prev => [...prev, { role: 'ai', content: errorMessage }]);
         } finally {
             setIsLoading(false);
         }

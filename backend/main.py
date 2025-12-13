@@ -250,7 +250,13 @@ async def chat(request: ChatRequest, session: SessionData = Depends(get_current_
 
     except Exception as e:
         print(f"Error generating chat response: {e}")
-        response_text = f"Error: {str(e)}. (Check logs)"
+        error_str = str(e)
+        if "413" in error_str or "Payload Too Large" in error_str:
+            response_text = "The question or context is too long. GPT-4o Mini only supports an 8k context limit. Please try shortening your query."
+        elif "rate limit" in error_str.lower() or "429" in error_str:
+             response_text = "I'm receiving too many requests right now. Please wait a moment and try again."
+        else:
+            response_text = "I encountered a technical issue while processing your request. Please try again."
 
     # Identify highlighted nodes
     if session.graph_agent.graph:
