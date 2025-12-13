@@ -58,7 +58,7 @@ function App() {
   };
 
   return (
-    <div className="flex flex-col md:flex-row h-[100dvh] w-screen bg-[#0f172a] text-white overflow-hidden relative">
+    <div className="flex flex-col md:flex-row h-[100dvh] w-full bg-[#0f172a] text-white overflow-hidden relative">
 
       {/* 
         MAIN CONTENT AREA (Graph / Welcome)
@@ -145,7 +145,7 @@ function App() {
         style={!isMobile ? { width: isDesktopChatOpen ? SIDEBAR_WIDTH : 0, overflow: 'hidden' } : {}}
         ref={sidebarRef}
       >
-        <div style={{ minWidth: SIDEBAR_WIDTH, height: '100%' }}> {/* Wrapper to prevent content squishing during transition */}
+        <div style={{ minWidth: isMobile ? '100%' : SIDEBAR_WIDTH, height: '100%' }}> {/* Wrapper to prevent content squishing during transition */}
           <ChatInterface
             onNewGraphData={setGraphData}
             onHighlightNodes={setHighlightedNodes}

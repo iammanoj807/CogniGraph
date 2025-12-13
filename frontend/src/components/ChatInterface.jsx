@@ -78,25 +78,25 @@ const ChatInterface = ({ onUploadSuccess, onNewGraphData, onHighlightNodes, hasU
     };
 
     return (
-        <div className="flex flex-col h-full bg-gray-900 border-l border-gray-700 shadow-2xl">
+        <div className="flex flex-col h-full bg-gray-900 shadow-2xl">
             {/* Header */}
-            <div className="p-4 border-b border-gray-700 bg-gray-800 flex justify-between items-center shadow-md">
+            <div className="p-3 md:p-4 border-b border-gray-700 bg-gray-800 flex justify-between items-center shadow-md">
                 <div className="flex items-center gap-2 text-blue-400">
                     <MessageSquare size={20} />
                     <h2 className="font-bold text-lg tracking-wide hidden sm:block">CogniChat</h2>
                 </div>
 
-                <div className="flex items-center gap-2">
-                    {/* Model Indicator (Static for now) */}
-                    <div className="bg-gray-700 text-white text-sm rounded-lg px-3 py-2 border border-gray-600 shadow-sm min-w-[140px] flex items-center justify-between">
-                        <span>GPT-4o Mini</span>
-                        <span className="w-2 h-2 rounded-full bg-blue-500 ml-2"></span>
-                    </div>
+                <div className="flex items-center gap-3 flex-shrink-0">
+                    <img
+                        src="/graph-favicon.svg"
+                        alt="CogniGraph Logo"
+                        className="w-8 h-8 opacity-80 hover:opacity-100 transition-opacity"
+                    />
 
                     {/* Mobile: Toggle Expand/Collapse */}
                     <button
                         onClick={onToggleMobileExpand}
-                        className="md:hidden p-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition"
+                        className="md:hidden p-2 text-blue-400 hover:text-blue-300 transition"
                         title={isMobileExpanded ? "Show Graph" : "Expand Chat"}
                     >
                         {isMobileExpanded ? <ChevronDown size={20} /> : <ChevronUp size={20} />}
@@ -131,7 +131,7 @@ const ChatInterface = ({ onUploadSuccess, onNewGraphData, onHighlightNodes, hasU
             </div>
 
             {/* Input Area */}
-            <div className="p-4 bg-gray-800 border-t border-gray-700">
+            <div className="p-3 md:p-4 bg-gray-800 border-t border-gray-700">
                 <div className="flex gap-2 relative">
                     <input
                         type="text"
@@ -139,12 +139,12 @@ const ChatInterface = ({ onUploadSuccess, onNewGraphData, onHighlightNodes, hasU
                         onChange={(e) => setInput(e.target.value)}
                         onKeyPress={(e) => e.key === 'Enter' && handleSend()}
                         placeholder="Ask about your document..."
-                        className="flex-1 bg-gray-900 text-white rounded-xl px-4 py-3 border border-gray-700 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition placeholder-gray-500"
+                        className="flex-1 bg-gray-900 text-white rounded-xl pl-4 pr-12 py-3 border border-gray-700 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition placeholder-gray-500"
                     />
                     <button
                         onClick={handleSend}
                         disabled={!input.trim() || isLoading}
-                        className="absolute right-2 top-2 p-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition shadow-lg"
+                        className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition shadow-lg flex items-center justify-center"
                     >
                         <Send size={18} />
                     </button>
@@ -152,15 +152,7 @@ const ChatInterface = ({ onUploadSuccess, onNewGraphData, onHighlightNodes, hasU
 
                 {/* Footer / Credits */}
                 <div className="text-center mt-4 pt-4 border-t border-gray-700/50 flex flex-col items-center gap-0">
-                    <span className="text-sm text-gray-500 font-medium">Made with ❤️ by</span>
-                    <div className="flex items-center gap-2">
-                        <img
-                            src="/manoj.png"
-                            alt="Manoj Kumar Thapa"
-                            className="w-10 h-10 rounded-full border-2 border-blue-500 shadow-md"
-                        />
-                        <span className="text-base font-medium text-gray-200 tracking-wide">Manoj Kumar Thapa</span>
-                    </div>
+                    <span className="text-[10px] text-gray-500 font-mono tracking-wider">Powered by GPT-4o Mini</span>
                 </div>
             </div>
         </div>
