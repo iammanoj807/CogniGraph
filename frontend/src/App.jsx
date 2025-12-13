@@ -46,7 +46,7 @@ function App() {
 
   const [activeMobileTab, setActiveMobileTab] = useState('graph'); // 'graph' or 'chat' for mobile
   const sidebarRef = useRef(null);
-  const SIDEBAR_WIDTH = 400; // Fixed width for desktop chat sidebar
+  const SIDEBAR_WIDTH = 450; // Fixed width for desktop chat sidebar
 
   const [autoTriggerUpload, setAutoTriggerUpload] = useState(false);
 

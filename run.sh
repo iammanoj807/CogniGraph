@@ -1,31 +1,61 @@
 #!/bin/bash
 
+# Colors for output
+GREEN='\033[0;32m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
+echo -e "${BLUE}🚀 Starting CogniGraph...${NC}"
+
+# Cleanup existing processes
+echo -e "${BLUE}🧹 Cleaning up ports 8000 and 5173...${NC}"
+lsof -t -i :8000 | xargs kill -9 2>/dev/null
+lsof -t -i :5173 | xargs kill -9 2>/dev/null
+
+sleep 1
+
 # Start Backend
-echo "Starting Backend..."
+echo -e "${GREEN}📦 Setting up Backend...${NC}"
 cd backend
-# Create venv if not exists
+
+# Create virtual environment if it doesn't exist
 if [ ! -d "venv" ]; then
+    echo "Creating virtual environment..."
     python3 -m venv venv
-    source venv/bin/activate
-    pip install -r requirements.txt
-else
-    source venv/bin/activate
 fi
 
-# Run in background
-uvicorn main:app --reload --port 8000 &
+# Activate virtual environment
+source venv/bin/activate
+
+# Install dependencies (quietly)
+echo "Installing Python dependencies..."
+pip install -r requirements.txt --quiet
+
+# Start backend in background
+echo -e "${GREEN}✅ Starting FastAPI Backend on http://localhost:8000${NC}"
+uvicorn main:app --reload --host 0.0.0.0 --port 8000 &
 BACKEND_PID=$!
 
 # Start Frontend
-echo "Starting Frontend..."
 cd ../frontend
+echo -e "${GREEN}📦 Setting up Frontend...${NC}"
+
+# Install npm dependencies if node_modules doesn't exist
+if [ ! -d "node_modules" ]; then
+    echo "Installing npm dependencies..."
+    npm install
+fi
+
+# Start frontend
+echo -e "${GREEN}✅ Starting React Frontend on http://localhost:5173${NC}"
 npm run dev &
 FRONTEND_PID=$!
 
-echo "CogniGraph is running!"
-echo "Backend: http://localhost:8000"
-echo "Frontend: http://localhost:5173"
-echo "Press CTRL+C to stop."
+echo -e "${BLUE}🎉 CogniGraph is running!${NC}"
+echo -e "Frontend: http://localhost:5173"
+echo -e "Backend:  http://localhost:8000"
+echo -e "Press Ctrl+C to stop all services"
 
-# Wait for user to exit
-wait $BACKEND_PID $FRONTEND_PID
+# Wait for Ctrl+C
+trap "kill $BACKEND_PID $FRONTEND_PID 2>/dev/null; exit" INT
+wait

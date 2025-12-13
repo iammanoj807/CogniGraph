@@ -108,7 +108,7 @@ const ChatInterface = ({ onUploadSuccess, onNewGraphData, onHighlightNodes, hasU
             <div className="flex-1 overflow-y-auto p-4 space-y-4 custom-scrollbar">
                 {messages.map((msg, idx) => (
                     <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'} `}>
-                        <div className={`max-w-[85%] p-3 rounded-2xl shadow-md text-sm leading-relaxed ${msg.role === 'user'
+                        <div className={`max-w-[85%] p-3 rounded-2xl shadow-md text-sm leading-relaxed break-words ${msg.role === 'user'
                             ? 'bg-blue-600 text-white rounded-br-none'
                             : 'bg-gray-800 text-gray-200 rounded-bl-none border border-gray-700'
                             } `}>
