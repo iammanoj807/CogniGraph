@@ -167,7 +167,9 @@ async def upload_document(
     
     start_time = time.time()
 
-    # 1. Add to RAG
+    # 1. Clear old RAG data and add new document
+    print("DEBUG: Resetting RAG Engine (clearing old data)...")
+    session.rag_engine.reset()
     print("DEBUG: Starting RAG Indexing...")
     session.rag_engine.add_document(text, file.filename)
     rag_time = time.time()

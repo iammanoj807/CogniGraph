@@ -7,6 +7,19 @@ class RAGEngine:
         self.client = chromadb.Client()
         self.collection = self.client.get_or_create_collection(name="cognigraph_docs")
         # Default embedding function is usually built-in (all-MiniLM-L6-v2)
+    
+    def reset(self):
+        """
+        Clear all documents from the vector store.
+        Called before processing a new document to prevent stale data.
+        """
+        try:
+            self.client.delete_collection(name="cognigraph_docs")
+            self.collection = self.client.get_or_create_collection(name="cognigraph_docs")
+            print("RAG Engine reset: Cleared all previous documents.")
+        except Exception as e:
+            print(f"RAG reset warning: {e}")
+            # Collection might not exist, which is fine
         
     def add_document(self, text: str, doc_id: str):
         """
