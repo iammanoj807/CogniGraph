@@ -122,7 +122,7 @@ const WelcomeScreen = ({ onUploadSuccess, autoTrigger, onOpenChat }) => {
                                         const h = Math.floor(retryIn / 3600);
                                         const m = Math.floor((retryIn % 3600) / 60);
                                         const s = retryIn % 60;
-                                        return `Rate Limit. Retry in: ${h > 0 ? `${h}h ` : ''}${m}m ${s}s`;
+                                        return `API Rate Limit. Retry in: ${h > 0 ? `${h}h ` : ''}${m}m ${s}s`;
                                     })()
                                     : error}
                             </p>
