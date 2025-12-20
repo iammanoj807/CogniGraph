@@ -128,6 +128,10 @@ This project uses the **GitHub Models API (Free Tier)** for AI inference.
 
 ---
 
+## 🤝 Contributing
+
+Contributions are welcome! Please fork the repository and submit a Pull Request.
+
 ## 📜 License
 
 Distributed under the MIT License. See `LICENSE` for more information.
