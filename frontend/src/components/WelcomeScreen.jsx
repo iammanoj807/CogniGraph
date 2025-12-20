@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { Upload, FileText, ArrowRight, MessageSquare } from 'lucide-react';
+import { Upload, FileText, ArrowRight, MessageSquare, Clock } from 'lucide-react';
 import axios from 'axios';
 
 const WelcomeScreen = ({ onUploadSuccess, autoTrigger, onOpenChat }) => {
@@ -114,8 +114,9 @@ const WelcomeScreen = ({ onUploadSuccess, autoTrigger, onOpenChat }) => {
                     </button>
 
                     {error && (
-                        <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-3 max-w-sm w-full">
-                            <p className="text-red-400 text-sm animate-pulse font-mono break-words">
+                        <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-3 max-w-sm w-full flex items-center justify-center gap-2">
+                            {retryIn > 0 && <Clock size={16} className="text-red-400 shrink-0" />}
+                            <p className="text-red-400 text-sm animate-pulse font-mono break-words text-center">
                                 {retryIn > 0
                                     ? (() => {
                                         const h = Math.floor(retryIn / 3600);
