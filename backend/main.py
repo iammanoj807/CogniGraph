@@ -256,7 +256,7 @@ async def chat(request: ChatRequest, session: SessionData = Depends(get_current_
         if "413" in error_str or "Payload Too Large" in error_str:
             response_text = "The question or context is too long. GitHub Models Free Trial limits GPT-4o Mini to 8k tokens. Please try shortening your query."
         elif "rate limit" in error_str.lower() or "429" in error_str:
-             response_text = "I'm receiving too many requests right now. Please wait a moment and try again."
+             response_text = "API Rate Limit reached. Please wait a moment and try again."
         else:
             response_text = "I encountered a technical issue while processing your request. Please try again."
 
