@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, MessageSquare, ChevronUp, ChevronDown } from 'lucide-react';
+import { Send, MessageSquare, ChevronUp, ChevronDown, Clock } from 'lucide-react';
 import axios from 'axios';
 
 const ChatInterface = ({ onUploadSuccess, onNewGraphData, onHighlightNodes, hasUploadedDocument, isMobileExpanded, onToggleMobileExpand }) => {
@@ -114,6 +114,9 @@ const ChatInterface = ({ onUploadSuccess, onNewGraphData, onHighlightNodes, hasU
                             ? 'bg-blue-600 text-white rounded-br-none'
                             : 'bg-gray-800 text-gray-200 rounded-bl-none border border-gray-700'
                             } `}>
+                            {msg.content.includes("Rate Limit") && (
+                                <Clock size={16} className="inline mr-2 mb-0.5" />
+                            )}
                             {msg.content}
                         </div>
                     </div>
