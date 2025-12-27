@@ -13,6 +13,9 @@ app_port: 7860
   <h1>CogniGraph</h1>
 </div>
 
+
+## ✨ Overview
+
 **CogniGraph** is an AI-powered Knowledge Graph Explorer that transforms static documents into interactive, navigable visualizations. Upload any PDF or text file, and watch as it extracts key entities and relationships, allowing you to "see" the structure of your data and chat with it in real-time.
 
 ---
