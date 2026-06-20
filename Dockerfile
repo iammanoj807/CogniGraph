@@ -2,7 +2,6 @@
 FROM node:18 AS frontend-builder
 WORKDIR /app/frontend
 
-# Copy frontend source
 COPY frontend/package*.json ./
 RUN npm install
 
@@ -18,21 +17,24 @@ RUN apt-get update && apt-get install -y \
     poppler-utils \
     && rm -rf /var/lib/apt/lists/*
 
-WORKDIR /app
+# Add a non-root user (Hugging Face requirement)
+RUN useradd -m -u 1000 user
+USER user
+ENV HOME=/home/user \
+    PATH=/home/user/.local/bin:$PATH
+
+WORKDIR $HOME/app
 
 # Copy Backend requirements
-COPY backend/requirements.txt .
+COPY --chown=user backend/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy Backend Code
-COPY backend/ .
+COPY --chown=user backend/ .
 
 # Copy Frontend Build Result
-# We rename 'dist' to 'frontend_static' to match our main.py logic
-COPY --from=frontend-builder /app/frontend/dist ./frontend_static
+COPY --chown=user --from=frontend-builder /app/frontend/dist ./frontend_static
 
-# Expose Hugging Face Port
 EXPOSE 7860
 
-# Run FastAPI
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "7860"]
