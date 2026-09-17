@@ -1,5 +1,6 @@
 import networkx as nx
 import json
+import re
 from llm_client import query_llm
 
 class GraphAgent:
@@ -46,13 +47,19 @@ class GraphAgent:
         
         Format: {{ "triples": [ {{"source": "Parent Node", "target": "Child Node", "relation": "relationship"}} ] }}
         Target: Extract at least {dynamic_limit} relationships. If the content is sparse and you cannot reach this target, extract as many meaningful relationships as possible without hallucinating.
+
+        CRITICAL JSON RULES:
+        - Return ONLY a valid JSON object starting with {{ and ending with }}.
+        - Escape any internal double quotes within values using backslash (\").
+        - Separate every object in the "triples" array with a comma.
+        - Do not include trailing commas or comments.
         
         Text:
         {input_text} 
         """
 
         messages = [
-            {"role": "system", "content": "You are a JSON-speaking API."},
+            {"role": "system", "content": "You are a JSON-speaking API. Output strictly valid JSON."},
             {"role": "user", "content": prompt_text}
         ]
 
@@ -68,18 +75,52 @@ class GraphAgent:
             # Clean up markdown code blocks if present
             cleaned_content = raw_content.replace('```json', '').replace('```', '').strip()
             
+            triples = []
+            
+            # Tier 1: Direct JSON parse
             try:
                 data = json.loads(cleaned_content)
-            except json.JSONDecodeError:
-                print("JSON decode failed, attempting regex extraction...")
-                import re
-                match = re.search(r'\{.*\}', cleaned_content, re.DOTALL)
-                if match:
-                    data = json.loads(match.group())
-                else:
-                    raise ValueError("Could not find valid JSON in response")
-            
-            triples = data.get("triples", [])
+                if isinstance(data, dict):
+                    triples = data.get("triples", [])
+            except Exception as e:
+                print(f"Tier 1 JSON parse failed: {e}")
+
+            # Tier 2: Syntax repair (fix missing commas between objects, trailing commas, unclosed brackets)
+            if not triples:
+                try:
+                    repaired = re.sub(r'\}\s*\{', '},\n{', cleaned_content)
+                    repaired = re.sub(r',\s*([\]\}])', r'\1', repaired)
+                    if '[' in repaired and ']' not in repaired:
+                        last_brace = repaired.rfind('}')
+                        if last_brace != -1:
+                            repaired = repaired[:last_brace+1] + '\n]}'
+                    elif '{' in repaired and '}' not in repaired:
+                        repaired = repaired + '\n}'
+                    
+                    data = json.loads(repaired)
+                    if isinstance(data, dict):
+                        triples = data.get("triples", [])
+                        print(f"Tier 2 JSON repair succeeded: recovered {len(triples)} triples.")
+                except Exception as e:
+                    print(f"Tier 2 JSON repair failed: {e}")
+
+            # Tier 3: Resilient regex extraction (extracts individual triples even if outer JSON is broken)
+            if not triples:
+                print("Tier 3: Attempting resilient regex extraction...")
+                for block in re.finditer(r'\{([^{}]+)\}', cleaned_content, re.DOTALL):
+                    block_text = block.group(1)
+                    src_m = re.search(r'\"source\"\s*:\s*\"(.*?)\"(?:\s*,|\s*\})', block_text, re.DOTALL)
+                    tgt_m = re.search(r'\"target\"\s*:\s*\"(.*?)\"(?:\s*,|\s*\})', block_text, re.DOTALL)
+                    rel_m = re.search(r'\"relation\"\s*:\s*\"(.*?)\"(?:\s*,|\s*\})', block_text, re.DOTALL)
+                    if src_m and tgt_m and rel_m:
+                        src = src_m.group(1).strip()
+                        tgt = tgt_m.group(1).strip()
+                        rel = rel_m.group(1).strip()
+                        if src and tgt:
+                            triples.append({'source': src, 'target': tgt, 'relation': rel})
+                
+                if triples:
+                    print(f"Tier 3 regex extraction succeeded: recovered {len(triples)} triples.")
 
             if not triples:
                 print("WARNING: Extracted triples list is empty.")
