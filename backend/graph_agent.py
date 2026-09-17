@@ -67,7 +67,7 @@ class GraphAgent:
             # Query LLM to get graph structure
             raw_content, rate_limits = query_llm(
                 messages=messages, 
-                model="gemini-2.5-flash",
+                model="gemini-3.6-flash",
                 json_mode=True,
                 max_tokens=4000
             )

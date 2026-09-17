@@ -44,7 +44,7 @@ def _update_rate_limits(headers):
     if tok_res: CACHED_RATE_LIMITS["reset_tokens"] = tok_res
 
 
-def query_llm(messages, max_tokens=4000, temperature=0.1, model="gemini-2.5-flash", json_mode=False):
+def query_llm(messages, max_tokens=4000, temperature=0.1, model="gemini-3.6-flash", json_mode=False):
     """
     Sends a request to the Google Gemini API (via OpenAI-compatible endpoint).
     Returns: (content_string, updated_rate_limits_dict)
@@ -62,7 +62,7 @@ def query_llm(messages, max_tokens=4000, temperature=0.1, model="gemini-2.5-flas
         # Default: Google Gemini endpoint
         endpoint = "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions"
         if not model.startswith("gemini"):
-            model = "gemini-2.5-flash"
+            model = "gemini-3.6-flash"
 
     headers = {
         "Content-Type": "application/json",

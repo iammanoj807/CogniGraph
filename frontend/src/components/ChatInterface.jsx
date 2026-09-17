@@ -8,7 +8,7 @@ const ChatInterface = ({ onUploadSuccess, onNewGraphData, onHighlightNodes, hasU
     ]);
     const [input, setInput] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-    const [selectedModel, setSelectedModel] = useState('gemini-2.5-flash');
+    const [selectedModel, setSelectedModel] = useState('gemini-3.6-flash');
     const messagesEndRef = useRef(null);
 
     // Auto-scroll to the latest message
@@ -157,7 +157,7 @@ const ChatInterface = ({ onUploadSuccess, onNewGraphData, onHighlightNodes, hasU
 
                 {/* Footer / Credits */}
                 <div className="text-center mt-3 pt-3 border-t border-gray-700/50 flex flex-col items-center gap-0">
-                    <span className="text-[10px] text-gray-400 font-mono tracking-wider">Powered by Gemini 2.5 Flash</span>
+                    <span className="text-[10px] text-gray-400 font-mono tracking-wider">Powered by Gemini 3.6 Flash</span>
                 </div>
             </div>
         </div>

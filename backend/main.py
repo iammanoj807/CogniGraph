@@ -68,7 +68,7 @@ async def get_current_session(x_session_id: str = Header(...)):
 
 class ChatRequest(BaseModel):
     message: str
-    model_provider: str = "gemini-2.5-flash"
+    model_provider: str = "gemini-3.6-flash"
 
 class GraphResponse(BaseModel):
     nodes: List[dict]
@@ -246,7 +246,7 @@ async def chat(request: ChatRequest, session: SessionData = Depends(get_current_
     try:
         response_text, rate_limits = query_llm(
             messages=messages,
-            model="gemini-2.5-flash",
+            model="gemini-3.6-flash",
             temperature=0.1
         )
 
