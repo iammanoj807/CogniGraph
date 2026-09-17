@@ -68,7 +68,7 @@ async def get_current_session(x_session_id: str = Header(...)):
 
 class ChatRequest(BaseModel):
     message: str
-    model_provider: str = "gpt-4o-mini"
+    model_provider: str = "gemini-2.5-flash"
 
 class GraphResponse(BaseModel):
     nodes: List[dict]
@@ -246,7 +246,7 @@ async def chat(request: ChatRequest, session: SessionData = Depends(get_current_
     try:
         response_text, rate_limits = query_llm(
             messages=messages,
-            model="gpt-4o-mini",
+            model="gemini-2.5-flash",
             temperature=0.1
         )
 
@@ -254,7 +254,7 @@ async def chat(request: ChatRequest, session: SessionData = Depends(get_current_
         print(f"Error generating chat response: {e}")
         error_str = str(e)
         if "413" in error_str or "Payload Too Large" in error_str:
-            response_text = "The question or context is too long. GitHub Models Free Trial limits GPT-4o Mini to 8k tokens. Please try shortening your query."
+            response_text = "The question or context is too long. Please try shortening your query."
         elif "rate limit" in error_str.lower() or "429" in error_str:
              response_text = "API Rate Limit reached. Please wait a moment and try again."
         else:

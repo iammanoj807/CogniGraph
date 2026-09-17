@@ -1,5 +1,5 @@
 """
-Centralized Client for GitHub Models API (via Azure AI Inference)
+Centralized LLM Client
 Uses requests directly for simpler header handling.
 """
 import requests
@@ -43,16 +43,22 @@ def _update_rate_limits(headers):
     if tok_res: CACHED_RATE_LIMITS["reset_tokens"] = tok_res
 
 
-def query_llm(messages, max_tokens=1000, temperature=0.1, model="gpt-4o-mini", json_mode=False):
+def query_llm(messages, max_tokens=4000, temperature=0.1, model="gemini-2.5-flash", json_mode=False):
     """
-    Sends a request to the GitHub Models API.
+    Sends a request to the Google Gemini API (via OpenAI-compatible endpoint).
     Returns: (content_string, updated_rate_limits_dict)
     """
-    endpoint = "https://models.inference.ai.azure.com/chat/completions"
-    token = os.getenv("MODEL_API_KEY")
-    
+    token = os.getenv("GEMINI_API_KEY")
+    if token:
+        endpoint = "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions"
+    else:
+        token = os.getenv("GROQ_API_KEY")
+        endpoint = "https://api.groq.com/openai/v1/chat/completions"
+        if model == "gemini-2.5-flash":
+            model = "qwen/qwen3.8-27b"
+            
     if not token:
-        raise ValueError("MODEL_API_KEY is missing in .env")
+        raise ValueError("GEMINI_API_KEY is missing in .env")
 
     headers = {
         "Content-Type": "application/json",

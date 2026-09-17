@@ -8,13 +8,13 @@ class GraphAgent:
     
     def extract_graph_from_text(self, text: str):
         """
-        Extract entities/relations using GPT-4o Mini (via llm_client) and build the graph.
+        Extract entities/relations using the configured LLM and build the graph.
         Returns: Tuple(triples, rate_limit_info)
         """
         self.graph.clear()
         
         input_text = text[:60000]
-        print(f"Extracting graph from {len(input_text)} chars using GPT-4o Mini...")
+        print(f"Extracting graph from {len(input_text)} chars...")
         
         # Dynamic Limit Logic
         # Base 20 relationships (for small files), plus 1 for every 500 characters
@@ -60,9 +60,9 @@ class GraphAgent:
             # Query LLM to get graph structure
             raw_content, rate_limits = query_llm(
                 messages=messages, 
-                model="gpt-4o-mini",
+                model="gemini-2.5-flash",
                 json_mode=True,
-                max_tokens=14000
+                max_tokens=4000
             )
 
             # Clean up markdown code blocks if present
@@ -107,7 +107,7 @@ class GraphAgent:
             return triples, rate_limits
             
         except Exception as e:
-            print(f"Error calling GPT-4o Mini: {e}")
+            print(f"Error calling LLM: {e}")
             raise 
 
     def reset_graph(self):

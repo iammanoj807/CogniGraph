@@ -44,7 +44,7 @@ short_description: Transform documents into interactive Knowledge Graphs.
 - **NetworkX** (Graph Construction)
 - **ChromaDB** (Vector Database for RAG)
 - **Pytesseract** & **PDF2Image** (OCR Engine)
-- **Azure AI Inference** (GitHub Models / GPT-4o Mini)
+- **Google Gemini API** (Gemini 2.5 Flash)
 
 ---
 
@@ -75,11 +75,11 @@ Before running the project, ensure you have the following installed:
     cd backend
     cp .env.example .env
     ```
-    Open `.env` and add your **GitHub Models API Key**:
+    Open `.env` and add your **Google Gemini API Key**:
     ```ini
-    MODEL_API_KEY=your_key_here
+    GEMINI_API_KEY=your_key_here
     ```
-    > 🔑 *Get a free key from the [GitHub Models Marketplace](https://github.com/settings/tokens/new).*
+    > 🔑 *Get a free key from [Google AI Studio](https://aistudio.google.com/app/apikey).*
 
 ---
 
@@ -109,7 +109,7 @@ This will automatically:
 
 **1. "401 Unauthorized" Error**
 *   Your API Key is invalid or expired.
-*   Get a new key from [GitHub Models](https://github.com/settings/tokens/new) and update `backend/.env`.
+*   Get a new key from [Google AI Studio](https://aistudio.google.com/app/apikey) and update `backend/.env`.
 
 **2. "Poppler/Tesseract not installed"**
 *   The app cannot read scanned PDFs without these tools.
@@ -121,13 +121,10 @@ This will automatically:
 
 ---
 
-## ⚠️ API Limitations (Free Tier)
+## ⚡ AI Engine
 
-This project uses the **GitHub Models API (Free Tier)** for AI inference.
-
-*   **Token Limit**: GPT-4o Mini are capped at a strict **8k token context window** ~~(standard is 128k)~~.
-*   **Handling**: The application uses **Retrieval-Augmented Generation (RAG)** to fetch only relevant document chunks, keeping the context within limits. However, extremely large individual queries or broad document summaries may still hit this cap.
-*   **Upgrade**: To unlock full 128k context, configure a paid **OpenAI / Azure API key** in the backend.
+This project is powered by **Google Gemini 2.5 Flash**, offering fast inference, high throughput, and generous token limits.
+The application uses **Retrieval-Augmented Generation (RAG)** to fetch only relevant document chunks to combine with graph relationships for grounded answers.
 
 ---
 
